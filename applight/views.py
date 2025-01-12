@@ -1,3 +1,6 @@
+from idlelib.rpc import request_queue
+from django.contrib import messages
+
 from django.shortcuts import render, get_object_or_404
 
 from applight.models import(
@@ -9,11 +12,27 @@ from applight.models import(
     Testimonial,
     FAQ,
     Block,
-    Contact
+    Contact,
+    FormSubmission
 )
 
 
 def index(request):
+    if request.method == "POST":
+        full_name = request.POST.get("full-name")
+        email=request.POST.get("email")
+        subject=request.POST.get("subject", "")
+        message=request.POST.get("message")
+
+        FormSubmission.objects.create(
+            full_name=full_name,
+            email=email,
+            subject=subject,
+            message=message
+        )
+
+        messages.success(request, "Your message has been sent successfully!!!")
+
     banner = get_object_or_404(Header)
     about=About.objects.all()
     video=get_object_or_404(Video)
@@ -38,3 +57,4 @@ def index(request):
         "contact":contact
     }
     return render(request, "base.html", data )
+

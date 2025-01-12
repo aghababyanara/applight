@@ -10,7 +10,8 @@ from .models import (
     Testimonial,
     FAQ,
     Block,
-    Contact
+    Contact,
+    FormSubmission
 )
 
 
@@ -69,6 +70,11 @@ class TeamAdmin(admin.ModelAdmin):
 @admin.register(Testimonial)
 class TestimonialAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(FormSubmission)
+class FormSubmissionAdmin(admin.ModelAdmin):
+    list_display=("full_name","email","subject","created_at")
+
 
 admin.site.register(FAQ)
 admin.site.register(Block)
